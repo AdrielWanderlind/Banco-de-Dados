@@ -65,7 +65,7 @@ create table itempedido(
 	pedido_id int not null,
     produto_id int not null,
     quantidade_id int not null,
-    preco_unit decimal(3,2) default 0
+    preco_unit decimal(10,2) default 0
 );
 
 -- Primary keys
@@ -81,22 +81,22 @@ alter table fornecedor add constraint fornecedor_cnpj_uq unique(cnpj);
 alter table cliente add constraint cliente_email_uq unique(email);
 
 -- Checks
-alter table produto add constraint produto_estoque_ck check(estoque>0);
+alter table produto add constraint produto_estoque_ck check(estoque>=0);
 alter table produto add constraint produto_preco_ck check(preco>0);
 alter table pedido add constraint pedido_status_ck check (status in('Em andamento', 'Cancelado', 'Concluido'));
 alter table cliente add constraint cliente_status_ck check(status in('Ativo','Inativo'));
-alter table itempedido add constraint itempedido_preco_ck check(preco_unit>0);
+alter table itempedido add constraint itempedido_preco_ck check(preco_unit>=0);
 
 
 -- Foreign keys
 alter table produto add constraint produto_idforn_fk foreign key(idforn) references fornecedor(idforn);
 alter table produto add constraint produto_idcategoria_fk foreign key(idcategoria) references categoria(idcategoria);
-alter table pedido add constraint cliente_pedido_fk foreign key(cliente_id) references cliente(idcliente);
-alter table itempedido add constraint pedido_itempedido_fk foreign key (pedido_id) references pedido(id);
-alter table itempedido add constraint produto_itempedido_fk foreign key (produto_id) references produto(id);
 
 -- 1 Para N / Um cliente pode ter mais de 1 pedido, mas cada pedido só pode ter 1 cliente
-alter table pedido add constraint pedido_clienteid_fk foreign key(cliente_id) references cliente(idcliente);
+alter table pedido add constraint cliente_pedido_fk foreign key(cliente_id) references cliente(idcliente);
+alter table itempedido add constraint pedido_pedido_fk foreign key (pedido_id) references pedido(id);
+alter table itempedido add constraint produto_produto_fk foreign key (produto_id) references produto(id);
+
 
 -- Default status 
 alter table pedido modify column status varchar(20) default 'Em Andamento';
