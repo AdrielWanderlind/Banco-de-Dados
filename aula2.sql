@@ -101,13 +101,3 @@ alter table itempedido add constraint produto_produto_fk foreign key (produto_id
 -- Default status 
 alter table pedido modify column status varchar(20) default 'Em Andamento';
 
--- Inserts
-
-insert into categoria(idcategoria,nome)
-values (2,'Higiene');
-insert into categoria(idcategoria,nome)
-values (1,'Comida');
-
-
-select * from categoria
-order by idcategoria desc;
