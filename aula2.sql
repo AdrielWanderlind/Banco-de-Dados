@@ -1,26 +1,5 @@
 -- DDL 
-
-CREATE DATABASE aula_ddl;
-use aula_ddl;
-
-create table teste(
-	idteste int primary key, -- criando uma constraint de coluna
-    nome varchar(50) not null
-);
-
-create table teste2(
-	idteste int not null,
-    nome varchar(50) not null,
-    constraint teste2pk_pk primary key(idteste)
-);
-
-create table teste3(
-	idteste int,
-    nome varchar(50) not null
-);
-
-alter table teste3 add constraint teste3_pk primary key(idteste);
-
+drop database ecom;
 create database ecom;
 use ecom;
 
@@ -39,7 +18,7 @@ create table fornecedor(
 create table produto(
 	id int not null,
     nome varchar(50) not null,
-    preco decimal (12,2),
+    preco decimal (10,3),
     estoque int default 0, -- toda vez que não informar, assume que o estoque está zerado
     idcategoria int null,
     idforn int not null
@@ -57,7 +36,7 @@ create table pedido(
 	id int not null,
     cliente_id int not null,
     data_pedido date,
-    total decimal(10,2) default 0,
+    total decimal(10,3) default 0,
     status varchar(20)
 );
 
@@ -101,3 +80,48 @@ alter table itempedido add constraint produto_produto_fk foreign key (produto_id
 -- Default status 
 alter table pedido modify column status varchar(20) default 'Em Andamento';
 
+INSERT INTO CLIENTE(idcliente,nome,email,status)
+values
+(1,'Lucas','ronaldo@gmail.com','Ativo'),
+(2,'Adriel','adrielwanderlind@gmail.com','Inativo'),
+(3,'Luiza','luiza@gmail.com','Ativo'),
+(4,'Bruno','bruno@gmail.com','Inativo');
+
+
+insert into categoria(nome)
+values ('Smartphones'),('Smartwatches'),('Tablets');
+
+insert into fornecedor(idforn,nome,cnpj)
+values
+(1,'Casas Bahia','111.222'),
+(2,'Americanas','222.333');
+
+insert into produto -- id nome preco estoque idcategoria idforn
+values
+(1,'Iphone 17 pro max',12.499,5,1,1),
+(2,'Windows tablet',4.199,20,3,1),
+(3,'Xiaomi mi band',349.99,15,2,2);
+
+
+--  id cliente_id data_pedido total
+insert into pedido (id,cliente_id,data_pedido,total,status) values
+(1,3,'2026-08-29',59.99,'Concluido'),
+(2,1,'2026-09-02',25.99,'Em andamento'),
+(3,2,'2026-08-16',29.99,'Concluido'),
+(4,4,'2026-06-30',5.99,'Em andamento');
+
+select * from cliente
+order by nome asc; -- desc (descrescente)
+
+select nome, upper(nome)
+from cliente;
+
+select * from categoria;
+select * from produto;
+
+select * from pedido
+order by cliente_id asc, data_pedido desc;
+
+select * from fornecedor;
+
+-- update nomeTabela set coluna = valornovo
